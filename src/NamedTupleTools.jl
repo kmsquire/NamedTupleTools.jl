@@ -25,7 +25,9 @@ if isdefined(Base, :fieldtypes)
 else
      export fieldtypes
 end
-          
+
+using TupleTools
+
 # length(T), length(x::T) without type piracy
 lengthof(::Type{T}) where {T<:NamedTuple} = length(T.parameters[1])
 lengthof(::Type{T}) where {N,T<:NamedTuple{N}} = length(N)
