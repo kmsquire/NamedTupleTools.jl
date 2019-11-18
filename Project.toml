@@ -4,6 +4,9 @@ uuid = "d9ec5142-1e00-5aa0-9d6a-321866360f50"
 license = "MIT"
 version = "0.12.0"
 
+[deps]
+TupleTools = "9d95972d-f1c8-5527-a6e0-b4b365fa01f6"
+
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
@@ -11,4 +14,5 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 test = ["Test"]
 
 [compat]
+TupleTools = "0"
 julia = "1"
