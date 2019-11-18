@@ -32,12 +32,6 @@ const EmptyNamedTuple = NamedTuple{(), Tuple{}}
 isempty(nt::EmptyNamedTuple) = true
 isempty(nt::NamedTuple{Names, T}) where {N, Names<:NTuple{N,Symbol}, T<:Tuple} = false
 
-# length(T), length(x::T) without type piracy
-lengthof(::Type{T}) where {T<:NamedTuple} = length(T.parameters[1])
-lengthof(::Type{T}) where {N,T<:NamedTuple{N}} = length(N)
-lengthof(::Type{NTuple{N,S}}) where {N,S} = N
-lengthof(x::NTuple{N,S}) where {N,S} = N
-
 # accept comma delimited values
 NamedTuple{T}(xs...) where {T} = NamedTuple{T}(xs)
 
