@@ -18,7 +18,7 @@ export @namedtuple,
        ntfromstruct, structfromnt,
        @structfromnt
 
-import Base: propertynames, fieldnames, valtype, values, merge
+import Base: propertynames, fieldnames, valtype, values, merge, isempty
 
 if isdefined(Base, :fieldtypes)
      import Base: fieldtypes
@@ -27,6 +27,10 @@ else
 end
 
 using TupleTools
+
+const EmptyNamedTuple = NamedTuple{(), Tuple{}}
+isempty(nt::EmptyNamedTuple) = true
+isempty(nt::NamedTuple{Names, T}) where {N, Names<:NTuple{N,Symbol}, T<:Tuple} = false
 
 # length(T), length(x::T) without type piracy
 lengthof(::Type{T}) where {T<:NamedTuple} = length(T.parameters[1])
