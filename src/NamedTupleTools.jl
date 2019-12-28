@@ -106,6 +106,14 @@ function ntfromstruct(x::T) where {T}
      return NamedTuple{names}(values)
 end
 
+function ntfromstruct(x::T; withstruct::Bool=false) where {T}
+     !isstructtype(T) && throw(ArgumentError("$(T) is not a struct type"))
+     !withstruct && return ntfromstruct(x)
+     names = (:StructName, fieldnames(T)...,)
+     values = (T, fieldvalues(x)...,)
+     return NamedTuple{names}(values)
+end
+
 # an instance of type S, a Struct
 function structfromnt(::Type{S}, x::NT) where {S, N, T, NT<:NamedTuple{N,T}}
      names = N
@@ -114,6 +122,15 @@ function structfromnt(::Type{S}, x::NT) where {S, N, T, NT<:NamedTuple{N,T}}
           throw(ErrorException("fields in ($S) do not match ($x)"))
      end
      return S(values...,)
+end
+
+function structfromnt(nt::NamedTuple{N,T}) where {N,T}
+    names = N
+    structsym, names = names[1], names[2:end]	
+    structsym !== :StructName && throw(ArgumentError("$(nt) does not have the field :StructName"))
+    values = fieldvalues(nt)
+    structtype, values = values[1], values[2:end]
+    return structtype(values...,)
 end
 
 # the Struct itself
@@ -125,6 +142,7 @@ function structfromnt(structname::Union{Symbol, String}, nt::NamedTuple{N,T}) wh
     eval(tostruct) # generate Struct
     return nothing
 end
+
 
 macro structfromnt(sname, nt)
     :( eval(structfromnt($(esc(sname)), $(esc(nt)))) )
